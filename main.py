@@ -86,7 +86,7 @@ def getQuarterlyIncomeStatement(url: str):
 
 
 print(getYearlyIncomeStatement(url))
-time.sleep(2)
+time.sleep(1.5)
 print(getQuarterlyIncomeStatement(url))
 
 
