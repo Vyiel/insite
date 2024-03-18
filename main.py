@@ -1,6 +1,7 @@
 
 import pandas as pd
 import time
+import csv
 
 import selenium
 from selenium import webdriver
@@ -12,82 +13,151 @@ from selenium.common.exceptions import TimeoutException
 # driver = "C:\\\\chromedriver.exe"
 url = "https://finance.yahoo.com/quote/PAYTM.NS/financials"
 
-def getYearlyIncomeStatement(url: str):
 
-    print("Getting Yearly Data!")
+# Config
 
-    driver = webdriver.Chrome()
+driver = webdriver.Chrome()
+driver.get(url)
+# driver.implicitly_wait(3)
+print("Browsing for Site!")
+time.sleep(3)
 
-    driver.get(url)
-    yearlyIncome = {}
 
-    delay = 3 # seconds
+
+def toCSV(title: str, data: dict):
+    dataFrame = pd.DataFrame.from_dict(data, orient="index")
+    dataFrame.to_csv(title+".csv")
+
+
+def expand():
     try:
-        expand_all_btn = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/div/div/section/div[2]/button/div/span')))
-        print ("Yearly Income Statement Page is ready!")
-        time.sleep(1)
-        print("Clicking Expand All button for full data! ")
-        expand_all_btn.click()
-        print("Waiting for data to load! ")
-        time.sleep(1)
+        print("Clicking Expand Button if not already expanded!")
+        global_expand_all_btn = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH,
+                                                                                        '//*[@id="Col1-1-Financials-Proxy"]/section/div[2]/button/div/span')))
+        button_text = global_expand_all_btn.text
+        print("Button Text: ", button_text)
+        if str(button_text) != "Expand All":
+            print("Columns Already Expanded!")
+            pass
+        else:
+            print("Columns not expanded. Clicking Expand All!")
+            global_expand_all_btn.click()
 
     except TimeoutException:
-        print ("Page Load Time Exceeded!")
+        print("Page Load Time Exceeded!")
 
 
-    # table = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/section/div[3]/div[1]/div/div[2]")
+# expand()
+
+
+def getAllData():
+
+    delay = 3
+
+
+    print("Getting Yearly Income Statement!")
+    expand()
+    print("Waiting for data to load!")
+    time.sleep(2)
+    yearlyIncome = {}
+    print("Getting Yearly Income Statement!")
+
     tableElements = driver.find_elements(by=By.CLASS_NAME, value='rw-expnded')
     for i in tableElements:
         particulars = i.text.splitlines()[0]
         values = i.text.splitlines()[1].replace(",", "").split(" ")
         yearlyIncome[particulars] = values
 
-    driver.close()
-    driver.quit()
-    return yearlyIncome
 
 
-def getQuarterlyIncomeStatement(url: str):
-
-    print("Getting Quarterly Data!")
-
-    driver = webdriver.Chrome()
-
-    driver.get(url)
+    print("Getting Quarterly Income Statement!")
     quarterlyIncome = {}
 
-    delay = 3 # seconds
+    delay = 3  # seconds
     try:
         quarterly_btn = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/div/div/section/div[1]/div[2]/button/div/span')))
         print("Yearly Income Statement Page is ready!")
         print("Clicking Quarterly Statement button!")
         quarterly_btn.click()
-        print('Waiting for Quarterly Statement Page!')
         time.sleep(2)
-        expand_all_btn = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/div/div/section/div[2]/button/div/span')))
-        print("Clicking Expand All button for full data! ")
-        expand_all_btn.click()
+        expand()
         print("Waiting for data to load! ")
-        time.sleep(1)
+        time.sleep(2)
 
     except TimeoutException:
-        print ("Page Load Time Exceeded!")
+        print("Page Load Time Exceeded!")
 
-
-    # table = driver.find_element(by=By.XPATH, value="/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/section/div[3]/div[1]/div/div[2]")
     tableElements = driver.find_elements(by=By.CLASS_NAME, value='rw-expnded')
     for i in tableElements:
         particulars = i.text.splitlines()[0]
         values = i.text.splitlines()[1].replace(",", "").split(" ")
         quarterlyIncome[particulars] = values
 
-    driver.quit()
-    return quarterlyIncome
 
 
-print(getYearlyIncomeStatement(url))
-time.sleep(1.5)
-print(getQuarterlyIncomeStatement(url))
+    print("Getting Yearly Balance Sheet!")
+    yearlyBalanceSheet = {}
+
+    delay = 3  # seconds
+    try:
+        balance_sheet_button = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/div/div/section/div[1]/div[1]/div/div[2]/a/div/span')))
+        print("Clicking Balance Sheet Button!")
+        balance_sheet_button.click()
+        time.sleep(2)
+        expand()
+        print("Waiting for data to load")
+        time.sleep(2)
+    except TimeoutException:
+        print("Page Load Time Exceeded!")
+
+    tableElements = driver.find_elements(by=By.CLASS_NAME, value='rw-expnded')
+    for i in tableElements:
+        particulars = i.text.splitlines()[0]
+        values = i.text.splitlines()[1].replace(",", "").split(" ")
+        yearlyBalanceSheet[particulars] = values
+
+
+
+    print("Getting Yearly Cash Flow!")
+    yearlyCashFlow = {}
+
+    delay = 3  # seconds
+    try:
+        cash_flow_button = WebDriverWait(driver, delay).until(EC.presence_of_element_located((By.XPATH, '/html/body/div[1]/div/div/div[1]/div/div[3]/div[1]/div/div[2]/section/div[1]/div[1]/div/div[3]/a/div/span')))
+        print("Clicking Cash Flow Button!")
+        cash_flow_button.click()
+        time.sleep(2)
+        expand()
+        print("Waiting for data to load")
+        time.sleep(2)
+    except TimeoutException:
+        print("Page Load Time Exceeded!")
+
+    tableElements = driver.find_elements(by=By.CLASS_NAME, value='rw-expnded')
+    for i in tableElements:
+        particulars = i.text.splitlines()[0]
+        values = i.text.splitlines()[1].replace(",", "").split(" ")
+        yearlyCashFlow[particulars] = values
+
+
+
+    driver.close()
+
+    return {
+        "yearlyIncome": yearlyIncome,
+        "quarterlyIncome": quarterlyIncome,
+        "yearlyBalanceSheet": yearlyBalanceSheet,
+        "yearlyCashFlow": yearlyCashFlow
+    }
+
+
+
+
+a = getAllData()
+for title, data in a.items():
+    toCSV(title=title, data=data)
+
+
 
 
 
