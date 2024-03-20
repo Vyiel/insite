@@ -2,6 +2,7 @@
 import pandas as pd
 import time
 import csv
+from functions import *
 
 import selenium
 from selenium import webdriver
@@ -22,12 +23,7 @@ driver.get(url)
 print("Browsing for Site!")
 time.sleep(3)
 
-
-
-def toCSV(title: str, data: dict):
-    dataFrame = pd.DataFrame.from_dict(data, orient="index")
-    dataFrame.to_csv(title+".csv")
-
+# end of Config
 
 def expand():
     try:
