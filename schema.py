@@ -28,7 +28,8 @@ class stocks(Base):
     __tablename__ = 'stocks'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    stock = Column(Text,)
+    stock = Column(Text)
+    symbol = Column(String(255))
     sector_id = Column(Integer, ForeignKey('sectors.id', ondelete='CASCADE'))
 
 
