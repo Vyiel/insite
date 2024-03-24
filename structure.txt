@@ -1,0 +1,201 @@
+
+DB Schema:
+
+Master Table for Stocks and industry
+
+Stocks table shall contain id, stock name, industry id
+
+3 tables for balance sheet, income statement (quarterly and yearly) and Cash Flow.
+each of the tables will have the actual details along with a stocks.id
+
+
+
+
+------------------------------------- DUMP -------------------------------------
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `insite`
+--
+CREATE DATABASE IF NOT EXISTS `insite` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+USE `insite`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `balance_sheet`
+--
+
+CREATE TABLE `balance_sheet` (
+  `id` int(11) NOT NULL,
+  `stocks_id` int(11) NOT NULL,
+  `y4` text DEFAULT NULL,
+  `y3` text DEFAULT NULL,
+  `y2` text DEFAULT NULL,
+  `y1` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quarterly_income`
+--
+
+CREATE TABLE `quarterly_income` (
+  `id` int(11) NOT NULL,
+  `stocks_id` int(11) NOT NULL,
+  `q6` text DEFAULT NULL,
+  `q5` text DEFAULT NULL,
+  `q4` text DEFAULT NULL,
+  `q3` text DEFAULT NULL,
+  `q2` text DEFAULT NULL,
+  `q1` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sectors`
+--
+
+CREATE TABLE `sectors` (
+  `id` int(11) NOT NULL,
+  `sector` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `stocks`
+--
+
+CREATE TABLE `stocks` (
+  `id` int(11) NOT NULL,
+  `stock` text NOT NULL,
+  `sector_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yearly_cashflow`
+--
+
+CREATE TABLE `yearly_cashflow` (
+  `id` int(11) NOT NULL,
+  `stocks_id` int(11) NOT NULL,
+  `y4` text DEFAULT NULL,
+  `y3` text DEFAULT NULL,
+  `y2` text DEFAULT NULL,
+  `y1` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `yearly_income`
+--
+
+CREATE TABLE `yearly_income` (
+  `id` int(11) NOT NULL,
+  `stocks_id` int(11) NOT NULL,
+  `y5` text DEFAULT NULL,
+  `y4` text DEFAULT NULL,
+  `y3` text DEFAULT NULL,
+  `y2` text DEFAULT NULL,
+  `y1` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `balance_sheet`
+--
+ALTER TABLE `balance_sheet`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `quarterly_income`
+--
+ALTER TABLE `quarterly_income`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `sectors`
+--
+ALTER TABLE `sectors`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `stocks`
+--
+ALTER TABLE `stocks`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `yearly_cashflow`
+--
+ALTER TABLE `yearly_cashflow`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `yearly_income`
+--
+ALTER TABLE `yearly_income`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `balance_sheet`
+--
+ALTER TABLE `balance_sheet`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quarterly_income`
+--
+ALTER TABLE `quarterly_income`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `sectors`
+--
+ALTER TABLE `sectors`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `stocks`
+--
+ALTER TABLE `stocks`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yearly_cashflow`
+--
+ALTER TABLE `yearly_cashflow`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `yearly_income`
+--
+ALTER TABLE `yearly_income`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
