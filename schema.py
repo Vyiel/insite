@@ -39,6 +39,7 @@ class yearlyIncome(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     stocks_id = Column(Integer, ForeignKey('stocks.id', ondelete='CASCADE'))
+    particulars = Column(Text)
     y5 = Column(Text, nullable=True)
     y4 = Column(Text, nullable=True)
     y3 = Column(Text, nullable=True)
@@ -52,6 +53,7 @@ class quarterlyIncome(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     stocks_id = Column(Integer, ForeignKey('stocks.id', ondelete='CASCADE'))
+    particulars = Column(Text)
     q6 = Column(Text, nullable=True)
     q5 = Column(Text, nullable=True)
     q4 = Column(Text, nullable=True)
@@ -66,6 +68,7 @@ class balanceSheet(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     stocks_id = Column(Integer, ForeignKey('stocks.id', ondelete='CASCADE'))
+    particulars = Column(Text)
     y4 = Column(Text, nullable=True)
     y3 = Column(Text, nullable=True)
     y2 = Column(Text, nullable=True)
@@ -78,6 +81,7 @@ class yearlyCashflow(Base):
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     stocks_id = Column(Integer, ForeignKey('stocks.id', ondelete='CASCADE'))
+    particulars = Column(Text)
     y4 = Column(Text, nullable=True)
     y3 = Column(Text, nullable=True)
     y2 = Column(Text, nullable=True)

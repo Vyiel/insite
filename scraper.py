@@ -11,18 +11,16 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-# driver = "C:\\\\chromedriver.exe"
-url = "https://finance.yahoo.com/quote/PAYTM.NS/financials"
-
 
 # Config
-driver = webdriver.Chrome()
+
+
 # driver.implicitly_wait(3)
 
 
 # end of Config
 
-def expand():
+def expand(driver):
     try:
         print("Clicking Expand Button if not already expanded!")
         global_expand_all_btn = WebDriverWait(driver, 5).until(EC.presence_of_element_located((By.XPATH,
@@ -45,6 +43,7 @@ def expand():
 
 def getAllData(url: str):
 
+    driver = webdriver.Chrome()
     driver.get(url)
 
 
@@ -54,7 +53,7 @@ def getAllData(url: str):
     delay = 3
 
     print("Getting Yearly Income Statement!")
-    expand()
+    expand(driver)
     print("Waiting for data to load!")
     time.sleep(2)
     yearlyIncome = {}
@@ -78,7 +77,7 @@ def getAllData(url: str):
         print("Clicking Quarterly Statement button!")
         quarterly_btn.click()
         time.sleep(2)
-        expand()
+        expand(driver)
         print("Waiting for data to load! ")
         time.sleep(2)
 
@@ -102,7 +101,7 @@ def getAllData(url: str):
         print("Clicking Balance Sheet Button!")
         balance_sheet_button.click()
         time.sleep(2)
-        expand()
+        expand(driver)
         print("Waiting for data to load")
         time.sleep(2)
     except TimeoutException:
@@ -125,7 +124,7 @@ def getAllData(url: str):
         print("Clicking Cash Flow Button!")
         cash_flow_button.click()
         time.sleep(2)
-        expand()
+        expand(driver)
         print("Waiting for data to load")
         time.sleep(2)
     except TimeoutException:
@@ -136,7 +135,6 @@ def getAllData(url: str):
         particulars = i.text.splitlines()[0]
         values = i.text.splitlines()[1].replace(",", "").split(" ")
         yearlyCashFlow[particulars] = values
-
 
 
     driver.close()
@@ -151,9 +149,9 @@ def getAllData(url: str):
 
 
 
-a = getAllData(url=url)
-for title, data in a.items():
-    toCSV(title=title, data=data)
+# a = getAllData(url=url)
+# for title, data in a.items():
+#     toCSV(title=title, data=data)
 
 
 
